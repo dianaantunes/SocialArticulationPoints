@@ -2,8 +2,24 @@ typedef struct {
   int v;
   int w;
 } Edge;
-Edge EDGE(int, int);
+
+typedef struct node *link;
+
+struct node {
+  int v;
+  link next;
+};
+
+struct graph {
+  int V;
+  int E;
+  link *adj;
+};
+
 typedef struct graph *Graph;
+
+link newLINK(int, link);
+Edge newEDGE(int, int);
 Graph GRAPHinit(int);
 void GRAPHinsertE(Graph, Edge);
 void GRAPHremoveE(Graph, Edge);

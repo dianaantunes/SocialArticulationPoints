@@ -2,27 +2,15 @@
 #include <stdio.h>
 #include "GRAPH.h"
 
-typedef struct node *link;
 
-struct node {
-  int v;
-  link next;
-};
-
-struct graph {
-  int V;
-  int E;
-  link *adj;
-};
-
-Edge EDGE(int v, int w) {
+Edge newEDGE(int v, int w) {
   Edge e;
   e.v = v;
   e.w = w;
   return e;
 }
 
-link NEW(int v, link next) {
+link newLINK(int v, link next) {
   link x = malloc(sizeof(*x));
   x -> v = v;
   x -> next = next;
@@ -41,9 +29,9 @@ Graph GRAPHinit(int V) {
   return G;
 }
 void GRAPHinsertE(Graph G, Edge e) {
-  int v = e.v, w = e.w;
-  G -> adj[v] = NEW(w, G -> adj[v]);
-  G -> adj[w] = NEW(v, G -> adj[w]);
+  int v = (e.v - 1), w = (e.w - 1);
+  G -> adj[v] = newLINK(w, G -> adj[v]);
+  G -> adj[w] = newLINK(v, G -> adj[w]);
   G -> E++;
 }
 
@@ -53,7 +41,7 @@ int GRAPHedges(Edge a[], Graph G) {
   for (v = 0; v < G -> V; v++) {
     for (t = G -> adj[v]; t != NULL; t = t -> next) {
       if (v < t -> v) {
-        a[E++] = EDGE(v, t -> v);
+        a[E++] = newEDGE(v, t -> v);
       }
     }
   }
@@ -65,9 +53,9 @@ void GRAPHshow(Graph G) {
   link t;
   printf("%d vertices, %d edges\n", G -> V, G -> E);
   for (v = 0; v < G -> V; v++) {
-    printf("%2d:", v);
+    printf("%2d:", v + 1);
     for (t = G -> adj[v]; t != NULL; t = t -> next) {
-      printf(" %2d", t -> v);
+      printf(" %2d", (t -> v) + 1);
     }
     printf("\n");
   }
