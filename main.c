@@ -1,7 +1,5 @@
 #include <stdlib.h>
 #include <stdio.h>
-#define MAX_INT 2147483647
-
 /* GRAPH ADT */
 
 typedef struct {
@@ -82,6 +80,54 @@ void GRAPHshow(Graph G) {
   }
 }
 
+/* Sedgwicks code */
+
+static int apcount, min = -1, max = -1;
+
+void apR(Graph G, int w, int d[], int low[], int pre[], int cnt, int ap[])
+  { link t; int v, children = 0;
+    d[w] = cnt++; low[w] = d[w];
+    for (t = G->adj[w]; t != NULL; t = t->next)
+      if (d[v = t->v] == -1) {
+          children++;
+          pre[v] = w;
+          apR(G, v, d, low, pre, cnt, ap);
+          if (low[w] > low[v]) low[w] = low[v];
+          if (low[v] >= d[w] && pre[w] != -1 && ap[w] == 0) {
+            ap[w] = 1;
+            apcount++;
+            if(w < min || min == -1) min = w + 1;
+            if(w > max) max = w + 1;
+          }
+          if (children > 1 && pre[w] == -1 && ap[w] == 0) {
+            ap[w] = 1;
+            apcount++;
+            if(w < min || min == -1) min = w + 1;
+            if(w > max) max = w + 1;
+          }
+      }
+      else if (v != pre[w]) {
+        if (low[w] > d[v]) low[w] = d[v];
+      }
+
+  }
+
+void GRAPHsearch(Graph G)
+  {
+    int cnt, d[G -> V], low[G -> V], pre[G -> V];
+    int ap[G -> V];
+    int v;
+    cnt = 0;
+    for (v = 0; v < G->V; v++) {
+      d[v] = -1;
+      pre[v] = -1;
+      ap[v] = 0;
+    }
+    for (v = 0; v < G->V; v++)
+      if (d[v] == -1)
+        apR(G, v, d, low, pre, cnt, ap);
+  }
+
 /* MAIN FILE */
 
 int main() {
@@ -98,8 +144,9 @@ int main() {
 	/* ALGORITMOOOOOOOOO*/
 
 
-
-  GRAPHshow(network);
+  GRAPHsearch(network);
+  printf("%d\n", apcount);
+  printf("%d %d\n", min, max);
 
   return 0;
 }
