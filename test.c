@@ -3,26 +3,45 @@
 
 int main(int argc, char** argv) {
 
-    /* We declare an int v to store the number of people in the network (vertices)
-    and reutilize to save one vertex of the edge, int u to store the other vertex
-    of the edge and an int e to the number of connections between people (edges)*/
-    int v, e, u, w; /*v = N; e = L*/
-    v = atoi(argv[1]);
-    e = atoi(argv[2]);
-    /* First we read from stdin the number of vertices and edges to initialize the
-    graf */
-    
-    /* We proceed to read all the connections from the input */
-    printf("%d %d\n", v*3, e*3+2);
-    for (; e>0; e--) {
-        scanf("%d %d", &u, &w);
-        printf("%d %d\n", u, w);
-        printf("%d %d\n", u+v, w+v);
-        printf("%d %d\n", u+2*v, w+2*v);
+    int v, e, u, w, mode;
+    mode = atoi(argv[1]);
+    scanf("%d %d\n", &v, &e);
+
+    if (mode == 1) { //duplicate full graph
+
+        printf("%d %d\n", v*2, e*2+1);
+        for (; e>0; e--) {
+            scanf("%d %d\n", &u, &w);
+            printf("%d %d\n", u, w);
+            printf("%d %d\n", u+v, w+v);
+        }
+        printf("1 %d\n", v+1);
+    }
+
+    else if (mode == 2) { //duplicate vertices, mantain edges
+
+        printf("%d %d\n", v*2, e);
+        for (; e>0; e--) {
+            scanf("%d %d\n", &u, &w);
+            printf("%d %d\n", u, w);
+        }
+    }
+
+    else if (mode == 3) { //mantain vertices, duplicate edges
+
+        printf("%d %d\n", v, e*2);
+        for (; e>0; e--) {
+            scanf("%d %d\n", &u, &w);
+            printf("%d %d\n", u, w);
+            printf("%d %d\n", rand() % v, rand() % v);
+        }
 
     }
-    printf("1 %d\n", v+1); 
-    printf("%d %d\n", v+1, 2*v+1); 
+
+    else {
+        printf("Invalid mode\n");
+        return 1;
+    }
 
     return 0;
 }

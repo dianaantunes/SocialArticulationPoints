@@ -42,7 +42,7 @@ link newLINK(int v, link next) {
     return x;
 }
 
-/* Initialization of the graph. 
+/* Initialization of the graph.
 Memory allocation and NULL initialization of V vertices.
 Operation complexity: O(V) */
 
@@ -60,7 +60,7 @@ Graph GRAPHinit(int V) {
 
 /* Insert an edge: O(1)*/
 void GRAPHinsertE(Graph G, Edge e) {
-    int v = (e.v - 1), w = (e.w - 1);
+    int v = (e.v), w = (e.w);
     G -> adj[v] = newLINK(w, G -> adj[v]);
     G -> adj[w] = newLINK(v, G -> adj[w]);
     G -> E++;
@@ -72,7 +72,7 @@ void GRAPHinsertE(Graph G, Edge e) {
 *******************************************************************************/
 
 /* We use 3 static ints: apcount to store the total number of articulation
-points (fundamental people), min to store the minimum articulation point and 
+points (fundamental people), min to store the minimum articulation point and
 max to store the maximum */
 static int apcount, min = -2, max = -2;
 
@@ -101,7 +101,7 @@ void searchArticulationPoints(Graph G, int vertex, int discoveryTime[],
         if (low[vertex] > low[adjVertex->v])
         /* If the low value of the vertex is higher than the low value of
         one of his adjacent vertices, it is updated as the lower value*/
-        low[vertex] = low[adjVertex->v];
+            low[vertex] = low[adjVertex->v];
 
         /* A vertex is an articulation point if:
         - It's not the root of a DFS tree and its
@@ -148,14 +148,14 @@ void GRAPHsearch(Graph G) {
     /* Following is the declaration of 4 auxiliary vectors to store properties of
     vertices: */
     int discoveryTime[numberOfVertices]; /* The discovery time in a DFS */
-    int low[numberOfVertices]; /* The low value: the lowest discovery time 
+    int low[numberOfVertices]; /* The low value: the lowest discovery time
     reachable from the vertex */
     int parent[numberOfVertices]; /* The parent of the vertex in a DFS */
-    int isArticulationPoint[numberOfVertices]; /* Pseudo-boolean vector: stores if 
+    int isArticulationPoint[numberOfVertices]; /* Pseudo-boolean vector: stores if
     the vertex has already been declared an articulation point (TRUE) or not (FALSE)*/
 
     /* First we initialize the discovery time, parents, and articulation point
-    properties of each vertex (O(V))*/ 
+    properties of each vertex (O(V))*/
     for (vertex = 0; vertex < numberOfVertices; vertex++) {
         discoveryTime[vertex] = NIL;
         parent[vertex] = NIL;
@@ -190,7 +190,7 @@ int main() {
     /* We proceed to read all the connections from the input */
     for (; e>0; e--) {
         scanf("%d %d", &u, &v);
-        Edge edge = newEDGE(u, v);
+        Edge edge = newEDGE(u-1, v-1);
         GRAPHinsertE(network, edge);
     }
 
